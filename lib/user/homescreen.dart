@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 213, 118, 213),
+                color: Colors.green.shade700,
               ),
               child: Text(
                 "Menu",
@@ -54,14 +54,14 @@ class HomeScreen extends StatelessWidget {
               leading: Icon(Icons.logout),
               title: Text("Logout"),
               onTap: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Logout tapped!")),
-                );
+                // Navigator.pop(context);
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(content: Text("Logout tapped!")),
+                // );
               },
             ),
           ],

@@ -1,8 +1,13 @@
 import 'package:expense_tracker/login/registerform.dart';
+import 'package:expense_tracker/services/loginapi.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  TextEditingController usernamecontroller=TextEditingController();
+   TextEditingController passwordcontroller=TextEditingController();
+
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +54,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         SizedBox(height: 30),
                         TextFormField(
+                          controller: usernamecontroller,
                           decoration: InputDecoration(
                             labelText: "Enter Your Username",
                             prefixIcon: Icon(Icons.person),
@@ -65,6 +71,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
+                          controller: passwordcontroller,
                           obscureText: true,
                           decoration: InputDecoration(
                             labelText: "Enter Your Password",
@@ -84,9 +91,10 @@ class LoginPage extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             if (_formkey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Login Successful")),
-                              );
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   SnackBar(content: Text("Login Successful")),
+                              // );
+                              loginfun(usernamecontroller.text,passwordcontroller.text,context);
                             }
                           },
                           style: ElevatedButton.styleFrom(

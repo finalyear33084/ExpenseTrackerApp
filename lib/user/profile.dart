@@ -1,3 +1,4 @@
+import 'package:expense_tracker/services/getprofileapi.dart';
 import 'package:expense_tracker/user/password.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class ProfileScreen extends StatelessWidget {
             children: [
               // Name Field
               TextField(
+                 controller:TextEditingController(text: profiledata['Name']) ,
                 decoration: InputDecoration(
                   labelText: 'Name',
                   border: OutlineInputBorder(),
@@ -26,6 +28,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Address Field
               TextField(
+                controller:TextEditingController(text: profiledata['Address']) ,
                 decoration: InputDecoration(
                   labelText: 'Address',
                   border: OutlineInputBorder(),
@@ -36,7 +39,9 @@ class ProfileScreen extends StatelessWidget {
 
               // Phone Number Field
               TextField(
-                decoration: InputDecoration(
+                controller:TextEditingController(text: profiledata['PhoneNumber'].toString()),
+
+               decoration: InputDecoration(
                   labelText: 'Phone Number',
                   border: OutlineInputBorder(),
                 ),
@@ -46,6 +51,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Email ID Field
               TextField(
+                controller:TextEditingController(text: profiledata['Email']),
                 decoration: InputDecoration(
                   labelText: 'Email ID',
                   border: OutlineInputBorder(),
@@ -56,6 +62,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Total Income Field
               TextField(
+                controller:TextEditingController(text: profiledata['Totalincome'].toString()),
                 decoration: InputDecoration(
                   labelText: 'Total Income',
                   border: OutlineInputBorder(),

@@ -1,4 +1,5 @@
 import 'package:expense_tracker/login/interface.dart';
+import 'package:expense_tracker/login/login.dart';
 import 'package:expense_tracker/user/bottomBar.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
     
-      home: BottomNavBarScreen(),
+      home: ImageInContainer(),
     
     );
   }

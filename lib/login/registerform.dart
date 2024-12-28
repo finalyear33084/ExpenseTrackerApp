@@ -1,8 +1,15 @@
+import 'package:expense_tracker/services/registrationapi.dart';
 import 'package:flutter/material.dart';
 
 class RegisterForm extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController passwordController = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
+  TextEditingController address = TextEditingController();
+  TextEditingController phoneNo = TextEditingController();
+  TextEditingController totalIncome = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +62,7 @@ class RegisterForm extends StatelessWidget {
                           children: [
                             // Name Field
                             TextFormField(
+                              controller: name,
                               decoration: InputDecoration(
                                 labelText: "Enter Your Name",
                                 prefixIcon: Icon(Icons.person),
@@ -70,8 +78,10 @@ class RegisterForm extends StatelessWidget {
                               },
                             ),
                             SizedBox(height: 20),
+
                             // Email Field
                             TextFormField(
+                              controller: email,
                               decoration: InputDecoration(
                                 labelText: "Enter Your Email",
                                 prefixIcon: Icon(Icons.email),
@@ -92,9 +102,10 @@ class RegisterForm extends StatelessWidget {
                               },
                             ),
                             SizedBox(height: 20),
+
                             // Password Field
                             TextFormField(
-                              controller: passwordController,
+                              controller: password,
                               obscureText: true,
                               decoration: InputDecoration(
                                 labelText: "Enter Your Password",
@@ -114,8 +125,10 @@ class RegisterForm extends StatelessWidget {
                               },
                             ),
                             SizedBox(height: 20),
+
                             // Confirm Password Field
                             TextFormField(
+                              controller: confirmPassword,
                               obscureText: true,
                               decoration: InputDecoration(
                                 labelText: "Confirm Password",
@@ -128,21 +141,93 @@ class RegisterForm extends StatelessWidget {
                                 if (value == null || value.isEmpty) {
                                   return "Please confirm your password";
                                 }
-                                if (value != passwordController.text) {
+                                if (value != password.text) {
                                   return "Passwords do not match";
                                 }
                                 return null;
                               },
                             ),
                             SizedBox(height: 20),
+
+                            // Address Field
+                            TextFormField(
+                              controller: address,
+                              decoration: InputDecoration(
+                                labelText: "Enter Your Address",
+                                prefixIcon: Icon(Icons.location_on),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter your address";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+
+                            // Phone Number Field
+                            TextFormField(
+                              controller: phoneNo,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                labelText: "Enter Your Phone Number",
+                                prefixIcon: Icon(Icons.phone),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter your phone number";
+                                }
+                                if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                                  return "Please enter a valid phone number";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+
+                            // Total Income Field
+                            TextFormField(
+                              controller: totalIncome,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: "Enter Your Total Income",
+                                prefixIcon: Icon(Icons.attach_money),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter your total income";
+                                }
+                                if (double.tryParse(value) == null) {
+                                  return "Please enter a valid amount";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+
                             // Register Button
                             ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text("Registration Successful!"),
-                                    ),
+                                  registerfun(
+                                    context,
+                                    name.text,
+                                    email.text,
+                                    password.text,
+                                    confirmPassword.text,
+                                    address.text,
+                                    phoneNo.text,
+                                    totalIncome.text,
+                                    
                                   );
                                 }
                               },
@@ -163,33 +248,6 @@ class RegisterForm extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 20),
-                            // Google Button
-                            OutlinedButton.icon(
-                              onPressed: () {
-                                // Handle Google Login
-                              },
-                              icon: Image.asset(
-                                'assets/logo.jpg', // Add your Google icon here
-                                height: 20,
-                                width: 20,
-                              ),
-                              label: Text(
-                                "Continue with Google",
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.black26),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 20),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -200,6 +258,7 @@ class RegisterForm extends StatelessWidget {
                   SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
+                      Navigator.pop(context);
                       // Navigate to Login Screen
                     },
                     child: Text(
@@ -218,11 +277,4 @@ class RegisterForm extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: RegisterForm(),
-  ));
 }
