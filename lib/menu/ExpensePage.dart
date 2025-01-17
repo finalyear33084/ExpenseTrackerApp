@@ -1,4 +1,5 @@
 import 'package:expense_tracker/login/login.dart';
+import 'package:expense_tracker/services/expenseApi.dart';
 import 'package:expense_tracker/user/feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,12 @@ class ExpensePage extends StatefulWidget {
 class _ExpensePageState extends State<ExpensePage> {
   // List of predefined categories for expenses
   final List<String> categories = [
-    'Food', 'Transport', 'Utilities', 'Entertainment', 'Shopping', 'Others'
+    'Food',
+    'Transport',
+    'Utilities',
+    'Entertainment',
+    'Shopping',
+    'Others'
   ];
 
   List<Map<String, dynamic>> expenses = [
@@ -23,20 +29,17 @@ class _ExpensePageState extends State<ExpensePage> {
     });
   }
 
-  void submitExpenses() {
-    print("Submitted Expenses: $expenses");
-    // You can perform further processing like sending data to a server
-    // or saving it locally.
-  }
-
   @override
   Widget build(BuildContext context) {
+    TextEditingController priceController = TextEditingController();
+    TextEditingController quantityController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Expenses"),
         centerTitle: true,
       ),
-      drawer: Drawer( // Adding the Drawer
+      drawer: Drawer(
+        // Adding the Drawer
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -56,7 +59,10 @@ class _ExpensePageState extends State<ExpensePage> {
               leading: Icon(Icons.feedback),
               title: Text("Feedback"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder:(context)=>FeedbackComplaintForm()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FeedbackComplaintForm()));
                 // Handle Feedback action
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -64,12 +70,12 @@ class _ExpensePageState extends State<ExpensePage> {
                 );
               },
             ),
-            
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Logout"),
-              onTap: () { 
-                Navigator.push(context, MaterialPageRoute(builder:(context)=> LoginPage()));
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Logout tapped!")),
@@ -115,8 +121,9 @@ class _ExpensePageState extends State<ExpensePage> {
                             },
                           ),
                           const SizedBox(height: 8.0),
-                          // Price input
+                          // Price inputcontro
                           TextField(
+                            controller: priceController,
                             decoration: InputDecoration(
                               labelText: "Price",
                               border: OutlineInputBorder(),
@@ -130,6 +137,7 @@ class _ExpensePageState extends State<ExpensePage> {
                           const SizedBox(height: 8.0),
                           // Quantity input
                           TextField(
+                            controller: quantityController,
                             decoration: InputDecoration(
                               labelText: "Quantity",
                               border: OutlineInputBorder(),
@@ -155,7 +163,15 @@ class _ExpensePageState extends State<ExpensePage> {
                   child: Text("Add More"),
                 ),
                 ElevatedButton(
-                  onPressed: submitExpenses,
+                  onPressed: () {
+                    Map<String, dynamic> data = {
+                      "price": priceController.text,
+                      'quantity': quantityController.text,
+                      "category": categories,
+                    };
+
+                    expenseApi(data);
+                  },
                   child: Text("Submit"),
                 ),
               ],

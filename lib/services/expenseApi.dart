@@ -1,15 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:expense_tracker/services/loginapi.dart';
 
 final Dio _dio = Dio();
 
-Future<Map<String, dynamic>> submitData({
-  required String endpoint, // API endpoint
-  required Map<String, dynamic> data, // Data to submit
-}) async {
+Future<Map<String, dynamic>> expenseApi( Map<String,dynamic> data) async {
   try {
-    final response = await _dio.post(endpoint, data: data);
+    final response = await _dio.post('$baseurl/',  data: data);
 
-    if (response.statusCode == 201 || response.statusCode == 200) {
+    if (response.statusCode == 201 || response.statusCode== 200) {
       return {
         "success": true,
         "message": "Data submitted successfully!",
@@ -26,12 +24,12 @@ Future<Map<String, dynamic>> submitData({
 
     if (e.response != null) {
       errorMessage = e.response?.data['message'] ?? errorMessage;
-    }  else if (e.type == DioErrorType.receiveTimeout) {
+    } else if (e.type == DioErrorType.receiveTimeout) {
       errorMessage = "Server took too long to respond.";
     }
 
     return {
-      "success": false, 
+      "success": false,
       "message": errorMessage,
     };
   } catch (e) {

@@ -23,7 +23,7 @@ class ImageInContainer extends StatelessWidget {
                   border: Border.all(
                       color: Colors.green, width: 4), // Border styling
                   image: DecorationImage(
-                    image: AssetImage('assets/logo.jpg'), // Local asset
+                    image: AssetImage('assets/exp.jpg'), // Local asset
                     // image: NetworkImage('https://example.com/image.jpg'), // For network image
                     fit: BoxFit
                         .cover, // Adjust how the image fits inside the container
