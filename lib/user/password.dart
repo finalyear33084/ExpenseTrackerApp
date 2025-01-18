@@ -1,3 +1,4 @@
+import 'package:expense_tracker/services/passwordapi.dart';
 import 'package:expense_tracker/user/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -71,31 +72,27 @@ class UpdatePasswordPage extends StatelessWidget {
 
     // Check if fields are empty
     if (newPassword.isEmpty || confirmPassword.isEmpty) {
-      _showMessage(context, 'Please fill in all fields.');
+      showMessage(context, 'Please fill in all fields.');
       return;
     }
 
     // Check if the passwords match
     if (newPassword != confirmPassword) {
-      _showMessage(context, 'Passwords do not match.');
+      showMessage(context, 'Passwords do not match.');
       return;
     }
 
-    // You can add additional password validation logic here (e.g., length, complexity)
+    
+   changePassword(data: {
+    'password':newPassword
+   },context: context);
 
-    // Simulate password update logic
-    _showMessage(context, 'Password updated successfully!');
-
-    // Navigate to Profile Screen after successful update
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ProfileScreen()), // Redirect to Profile Screen
-    // );
-    Navigator.pop(context);
+   
+   
   }
 
   // Method to show messages (snack bar)
-  void _showMessage(BuildContext context, String message) {
+  void showMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),

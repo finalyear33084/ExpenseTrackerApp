@@ -44,7 +44,7 @@ class ImageInContainer extends StatelessWidget {
               // Login Button
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
                   // Handle Login Action
                 },

@@ -1,3 +1,5 @@
+import 'package:expense_tracker/services/loginapi.dart';
+import 'package:expense_tracker/services/paymentapi.dart';
 import 'package:flutter/material.dart';
 // import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -21,7 +23,7 @@ class _ScanAndPayScreenState extends State<ScanAndPayScreen> {
 
     // Mock scanned data. Replace with actual QR code scan result.
     setState(() {
-      _scannedData = '1234567890'; // Example scanned ID
+      _scannedData = '1'; // Example scanned ID
       _isScanning = false;
     });
 
@@ -33,9 +35,13 @@ class _ScanAndPayScreenState extends State<ScanAndPayScreen> {
   void _confirmPayment() {
     final amount = _amountController.text.trim();
     if (amount.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment of \$${amount} confirmed!')),
-      );
+
+     paymentData(data: {
+      'sender_id': loginId ,
+      'receiver_id':_scannedData,
+      'Date':DateTime.now().toString().substring(0,10),
+      'Amount': _amountController.text ,
+     },context: context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please enter a valid amount.')),

@@ -1,34 +1,40 @@
+import 'package:expense_tracker/services/loginapi.dart';
+import 'package:expense_tracker/services/sentcomplint.dart';
 import 'package:expense_tracker/user/homescreen.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackComplaintForm extends StatefulWidget {
+  final feedbacks;
+
+  const FeedbackComplaintForm({super.key, this.feedbacks});
   @override
   _FeedbackComplaintFormState createState() => _FeedbackComplaintFormState();
 }
 
 class _FeedbackComplaintFormState extends State<FeedbackComplaintForm> {
   final _formKey = GlobalKey<FormState>(); // Form key to validate inputs
-  final _feedbackController = TextEditingController();
+  // final _feedbackController = TextEditingController();
   final _complaintController = TextEditingController();
 
-  void _submitForm() {
+  void _submitForm()async {
     if (_formKey.currentState!.validate()) {
-      final feedback = _feedbackController.text;
+      // final feedback = _feedbackController.text;
       final complaint = _complaintController.text;
-       Navigator.pushReplacement(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
 
       // You can handle the submission logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Form Submitted Successfully!"),
-        ),
-      );
+    await submitcomplaint(data:{
+      'USER':loginId,
+      'Complaint':complaint,
+      // 'Reply':,
+      'Date':DateTime.now().toString().substring(0,10)  ,
+    } ,context: context);
 
       // Clear the fields
-      _feedbackController.clear();
+      // _feedbackController.clear();
       _complaintController.clear();
     }
   }
@@ -47,28 +53,6 @@ class _FeedbackComplaintFormState extends State<FeedbackComplaintForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Feedback Field
-              Text(
-                "Your Feedback:",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _feedbackController,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Write your feedback here...",
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Feedback cannot be empty!";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-
               // Complaint Field
               Text(
                 "Your Complaint:",
@@ -112,6 +96,21 @@ class _FeedbackComplaintFormState extends State<FeedbackComplaintForm> {
                   ),
                 ),
               ),
+
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(child: ListView.builder(
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text('tile'),
+                      subtitle: Text('Reply: no reply'),
+                    ),
+                  );
+                },
+              ))
             ],
           ),
         ),
@@ -119,4 +118,3 @@ class _FeedbackComplaintFormState extends State<FeedbackComplaintForm> {
     );
   }
 }
-

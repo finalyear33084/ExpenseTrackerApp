@@ -1,43 +1,29 @@
 import 'package:dio/dio.dart';
+import 'package:expense_tracker/services/loginapi.dart';
+import 'package:flutter/material.dart';
 
 final Dio _dio = Dio();
 
-Future<Map<String, dynamic>> paymentData({
-  required String endpoint, // API endpoint
+Future<void> paymentData({
+  context,
   required Map<String, dynamic> data, // Data to submit
 }) async {
   try {
-    final response = await _dio.post(endpoint, data: data);
+    final response = await _dio.post('$baseurl/ViewTransactionApi', data: data);
 
     if (response.statusCode == 201 || response.statusCode == 200) {
-      return {
-        "success": true,
-        "message": "Data submitted successfully!",
-        "data": response.data, // Optionally return server response data
-      };
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('payment success')));
     } else {
-      return {
-        "success": false,
-        "message": "Failed to submit data. Status code: ${response.statusCode}",
-      };
+      print(response.data);
     }
   } on DioError catch (e) {
     String errorMessage = "An error occurred";
-
+print(e);
     if (e.response != null) {
       errorMessage = e.response?.data['message'] ?? errorMessage;
     }  else if (e.type == DioErrorType.receiveTimeout) {
       errorMessage = "Server took too long to respond.";
     }
 
-    return {
-      "success": false,
-      "message": errorMessage,
-    };
-  } catch (e) {
-    return {
-      "success": false,
-      "message": "Unexpected error: $e",
-    };
   }
 }

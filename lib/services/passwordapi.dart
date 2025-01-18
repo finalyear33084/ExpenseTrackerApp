@@ -1,51 +1,30 @@
 import 'package:dio/dio.dart';
+import 'package:expense_tracker/services/loginapi.dart';
+import 'package:flutter/material.dart';
 
 final Dio _dio = Dio();
 
-Future<Map<String, dynamic>> changePassword({
-  required String oldPassword,
-  required String newPassword,
-  required String confirmPassword,
+Future<void> changePassword({
+ data,context
 }) async {
   try {
-    final response = await _dio.post(
-      "/change-password", // Replace with your endpoint
-      data: {
-        "old_password": oldPassword,
-        "new_password": newPassword,
-        "confirm_password": confirmPassword,
-      },
+    final response = await _dio.put(
+      "$baseurl/UserUpdatepassword/$loginId", // Replace with your endpoint
+      data: data
     );
 
     if (response.statusCode == 200) {
-      return {
-        "success": true,
-        "message": "Password changed successfully!",
-      };
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('password updated')));
+      Navigator.pop(context);
     } else {
-      return {
-        "success": false,
-        "message":
-            "Failed to change password. Status code: ${response.statusCode}",
-      };
+     print('failed to update');
     }
   } on DioError catch (e) {
     String errorMessage = "An error occurred";
 
-    if (e.response != null) {
-      errorMessage = e.response?.data['message'] ?? errorMessage;
-    } else if (e.type == DioErrorType.receiveTimeout) {
-      errorMessage = "Server took too long to respond.";
-    }
-
-    return {
-      "success": false,
-      "message": errorMessage,
-    };
+   
+   print(e);
   } catch (e) {
-    return {
-      "success": false,
-      "message": "Unexpected error: $e",
-    };
+   print(e);
   }
 }

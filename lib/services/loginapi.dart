@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:expense_tracker/services/getdashapi.dart';
 
 import 'package:expense_tracker/services/getprofileapi.dart';
 import 'package:expense_tracker/user/bottomBar.dart';
@@ -23,6 +24,7 @@ Future<Map<String, dynamic>> loginfun(String username, String password,context) 
       if (response.data['message']=='success') {
          loginId=response.data['login_id'].toString();
       await   getProfile();
+      getDashboardData();
          Navigator.pushReplacement(context, MaterialPageRoute(builder: (ct)=>BottomNavBarScreen()));
       return {
         "success": true,

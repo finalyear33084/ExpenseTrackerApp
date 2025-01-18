@@ -1,43 +1,28 @@
 import 'package:dio/dio.dart';
+import 'package:expense_tracker/services/loginapi.dart';
 
 final Dio _dio = Dio();
 
-Future<Map<String, dynamic>> getNotifications() async {
+
+Future<List<Map<String, dynamic>>> getnotificationsData() async {
   try {
-    final response = await _dio
-        .get("/notifications"); // Replace with your notifications endpoint
+    final response =
+        await _dio.get("$baseurl/fughkjn/$loginId"); // Replace with your endpoint
 
     if (response.statusCode == 200) {
-      // Parse and return the notifications
-      return {
-        "success": true,
-        "notifications": response
-            .data['notifications'], // Adjust key name as per API response
-      };
+      // Parse the response data
+      return List<Map<String, dynamic>>.from(response.data) as List<Map<String, dynamic>>;
+     
     } else {
-      return {
-        "success": false,
-        "message":
-            "Failed to fetch notifications. Status code: ${response.statusCode}",
-      };
+      return [];
     }
   } on DioError catch (e) {
-    String errorMessage = "An error occurred";
+    
+print(e); 
+   
 
-    if (e.response != null) {
-      errorMessage = e.response?.data['message'] ?? errorMessage;
-    } else if (e.type == DioErrorType.receiveTimeout) {
-      errorMessage = "Server took too long to respond.";
-    }
-
-    return {
-      "success": false,
-      "message": errorMessage,
-    };
+    return [];
   } catch (e) {
-    return {
-      "success": false,
-      "message": "Unexpected error: $e",
-    };
+    return [];
   }
 }

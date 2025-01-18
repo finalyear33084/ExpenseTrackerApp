@@ -1,4 +1,7 @@
 import 'package:expense_tracker/login/login.dart';
+import 'package:expense_tracker/services/getprofileapi.dart';
+import 'package:expense_tracker/services/notification.dart';
+import 'package:expense_tracker/services/sentcomplint.dart';
 import 'package:expense_tracker/user/feedback.dart';
 import 'package:expense_tracker/user/notification.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +17,12 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications),
-            onPressed: () {
+            onPressed: ()async {
+           List<Map<String, dynamic>>notofications=await   getnotificationsData();
               // You can implement the notification logic here.
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationScreen()),
+                  MaterialPageRoute(builder: (context) => NotificationScreen(notofications:notofications)),
               );
             },
           ),
@@ -43,10 +47,11 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.feedback),
               title: Text("Feedback"),
-              onTap: () {
+              onTap: ()async {
+                List<Map<String, dynamic>>feedbacks=await viewComplaints();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FeedbackComplaintForm()),
+                  MaterialPageRoute(builder: (context) => FeedbackComplaintForm(feedbacks:feedbacks)),
                 );
               },
             ),
@@ -126,8 +131,8 @@ class HomeScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildInfoCard('Total Spend', '\$1200'),
-                  _buildInfoCard('Spend Balance', '\$800'),
+                  _buildInfoCard('Total Spend', '\$7687'),
+                  _buildInfoCard('Spend Balance', '${profiledata['Totalincome']}'),
                 ],
               ),
               SizedBox(height: 20),

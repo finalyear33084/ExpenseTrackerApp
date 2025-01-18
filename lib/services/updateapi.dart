@@ -1,52 +1,33 @@
 import 'package:dio/dio.dart';
+import 'package:expense_tracker/services/getprofileapi.dart';
+import 'package:expense_tracker/services/loginapi.dart';
+import 'package:flutter/material.dart';
 
 final Dio _dio = Dio();
 
-Future<Map<String, dynamic>> updateProfile({
-  required String name,
-  required String email,
-  required String phone,
+Future<void> updateProfile({
+ data,
+ context
 }) async {
   try {
-    final response = await _dio.post(
-      "/update-profile", // Replace with your endpoint
-      data: {
-        "name": name,
-        "email": email,
-        "phone": phone,
-      },
+    final response = await _dio.put(
+      "$baseurl/UserUpdation/$loginId", // Replace with your endpoint
+      data:data
     );
 
     if (response.statusCode == 200) {
-      return {
-        "success": true,
-        "message": "Profile updated successfully!",
-        "data": response.data, // Optionally return server response data
-      };
+   await   getProfile();
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('profile updated')));
     } else {
-      return {
-        "success": false,
-        "message":
-            "Failed to update profile. Status code: ${response.statusCode}",
-      };
+      print('failed');
     }
   } on DioError catch (e) {
     String errorMessage = "An error occurred";
 
-    if (e.response != null) {
-      errorMessage = e.response?.data['message'] ?? errorMessage;
-    } else if (e.type == DioErrorType.receiveTimeout) {
-      errorMessage = "Server took too long to respond.";
-    }
+   
 
-    return {
-      "success": false,
-      "message": errorMessage,
-    };
+   print(e);
   } catch (e) {
-    return {
-      "success": false,
-      "message": "Unexpected error: $e",
-    };
+   print(e);
   }
 }

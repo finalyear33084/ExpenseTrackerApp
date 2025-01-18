@@ -1,10 +1,38 @@
 import 'package:expense_tracker/services/getprofileapi.dart';
+import 'package:expense_tracker/services/updateapi.dart';
 import 'package:expense_tracker/user/password.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  TextEditingController nameControll=TextEditingController();
+
+   TextEditingController emailControll=TextEditingController();
+
+    TextEditingController addressControll=TextEditingController();
+
+     TextEditingController phoneControll=TextEditingController();
+
+      TextEditingController totalControll=TextEditingController();
+
+
+      @override
+  void initState() {
+   
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+     nameControll.text=profiledata['Name'];
+     emailControll .text=profiledata['Email'];
+      phoneControll.text=profiledata['PhoneNumber'].toString();
+       addressControll.text=profiledata['Address'];
+        totalControll.text=profiledata['Totalincome'];
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -18,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
             children: [
               // Name Field
               TextField(
-                 controller:TextEditingController(text: profiledata['Name']) ,
+                 controller:nameControll ,
                 decoration: InputDecoration(
                   labelText: 'Name',
                   border: OutlineInputBorder(),
@@ -28,7 +56,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Address Field
               TextField(
-                controller:TextEditingController(text: profiledata['Address']) ,
+                controller:addressControll ,
                 decoration: InputDecoration(
                   labelText: 'Address',
                   border: OutlineInputBorder(),
@@ -39,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Phone Number Field
               TextField(
-                controller:TextEditingController(text: profiledata['PhoneNumber'].toString()),
+                controller:phoneControll,
 
                decoration: InputDecoration(
                   labelText: 'Phone Number',
@@ -51,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Email ID Field
               TextField(
-                controller:TextEditingController(text: profiledata['Email']),
+                controller:emailControll,
                 decoration: InputDecoration(
                   labelText: 'Email ID',
                   border: OutlineInputBorder(),
@@ -62,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Total Income Field
               TextField(
-                controller:TextEditingController(text: profiledata['Totalincome'].toString()),
+                controller:totalControll,
                 decoration: InputDecoration(
                   labelText: 'Total Income',
                   border: OutlineInputBorder(),
@@ -88,7 +116,20 @@ class ProfileScreen extends StatelessWidget {
 
                   // Update Button
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: ()async {
+                    await  updateProfile(
+                        data: {
+                          'Name':nameControll.text,
+                          'Email':emailControll.text,
+                          'PhoneNumber':phoneControll.text,
+                          'Address':addressControll.text,
+                          'Totalincome':totalControll.text,
+
+                        },context: context
+                      );
+                      setState(() {
+                        
+                      });
                       // Handle Update Action
                     },
                     child: Text('Update'),

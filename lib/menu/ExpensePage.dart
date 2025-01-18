@@ -1,5 +1,6 @@
 import 'package:expense_tracker/login/login.dart';
 import 'package:expense_tracker/services/expenseApi.dart';
+import 'package:expense_tracker/services/loginapi.dart';
 import 'package:expense_tracker/user/feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,10 @@ class ExpensePage extends StatefulWidget {
 }
 
 class _ExpensePageState extends State<ExpensePage> {
+  TextEditingController priceController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  String? selectedCategory;
+
   // List of predefined categories for expenses
   final List<String> categories = [
     'Food',
@@ -19,27 +24,32 @@ class _ExpensePageState extends State<ExpensePage> {
     'Others'
   ];
 
-  List<Map<String, dynamic>> expenses = [
-    {"category": "", "price": 0.0, "quantity": 0}
-  ];
+  List<Map<String, dynamic>> expenses = [];
 
   void addMore() {
     setState(() {
-      expenses.add({"category": "", "price": 0.0, "quantity": 0});
+      // Add the current inputs to the expenses list
+      expenses.add({
+        "Category": selectedCategory ?? '',
+        "Price": priceController.text,
+        "Quantity": quantityController.text,
+      });
+
+      // Clear the controllers and reset the dropdown
+      priceController.clear();
+      quantityController.clear();
+      selectedCategory = null;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController priceController = TextEditingController();
-    TextEditingController quantityController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Expenses"),
         centerTitle: true,
       ),
       drawer: Drawer(
-        // Adding the Drawer
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -60,13 +70,8 @@ class _ExpensePageState extends State<ExpensePage> {
               title: Text("Feedback"),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FeedbackComplaintForm()));
-                // Handle Feedback action
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Feedback tapped!")),
+                  context,
+                  MaterialPageRoute(builder: (context) => FeedbackComplaintForm()),
                 );
               },
             ),
@@ -74,11 +79,9 @@ class _ExpensePageState extends State<ExpensePage> {
               leading: Icon(Icons.logout),
               title: Text("Logout"),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Logout tapped!")),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               },
             ),
@@ -101,9 +104,10 @@ class _ExpensePageState extends State<ExpensePage> {
                         children: [
                           // Dropdown for category selection
                           DropdownButtonFormField<String>(
-                            value: expenses[index]["category"].isEmpty
+                            value: expenses[index]["Category"] == null ||
+                                    expenses[index]["Category"].isEmpty
                                 ? null
-                                : expenses[index]["category"],
+                                : expenses[index]["Category"],
                             decoration: InputDecoration(
                               labelText: "Category",
                               border: OutlineInputBorder(),
@@ -116,35 +120,39 @@ class _ExpensePageState extends State<ExpensePage> {
                             }).toList(),
                             onChanged: (value) {
                               setState(() {
-                                expenses[index]["category"] = value!;
+                                expenses[index]["Category"] = value;
                               });
                             },
                           ),
                           const SizedBox(height: 8.0),
-                          // Price inputcontro
+                          // Price input
                           TextField(
-                            controller: priceController,
                             decoration: InputDecoration(
                               labelText: "Price",
                               border: OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.number,
+                            controller: TextEditingController(
+                              text: expenses[index]["Price"]?.toString(),
+                            ),
                             onChanged: (value) {
-                              expenses[index]["price"] =
+                              expenses[index]["Price"] =
                                   double.tryParse(value) ?? 0.0;
                             },
                           ),
                           const SizedBox(height: 8.0),
                           // Quantity input
                           TextField(
-                            controller: quantityController,
                             decoration: InputDecoration(
                               labelText: "Quantity",
                               border: OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.number,
+                            controller: TextEditingController(
+                              text: expenses[index]["Quantity"]?.toString(),
+                            ),
                             onChanged: (value) {
-                              expenses[index]["quantity"] =
+                              expenses[index]["Quantity"] =
                                   int.tryParse(value) ?? 0;
                             },
                           ),
@@ -163,19 +171,20 @@ class _ExpensePageState extends State<ExpensePage> {
                   child: Text("Add More"),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    Map<String, dynamic> data = {
-                      "price": priceController.text,
-                      'quantity': quantityController.text,
-                      "category": categories,
-                    };
-
-                    expenseApi(data);
+                  onPressed: ()async {
+                await    expenseApi({
+                      'USER': loginId,
+                      'items': expenses,
+                    }, context);
+                    expenses.clear();
+                    setState(() {
+                      
+                    });
                   },
                   child: Text("Submit"),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
