@@ -6,7 +6,7 @@ import 'package:expense_tracker/user/bottomBar.dart';
 import 'package:flutter/material.dart';
 
 final Dio _dio = Dio();
-String baseurl='http://192.168.1.212:5000';
+String baseurl='http://192.168.247.93:5000';
 String? loginId;
 Future<Map<String, dynamic>> loginfun(String username, String password,context) async {
   try {

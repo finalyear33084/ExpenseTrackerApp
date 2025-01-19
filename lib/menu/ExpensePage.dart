@@ -21,6 +21,13 @@ class _ExpensePageState extends State<ExpensePage> {
     'Utilities',
     'Entertainment',
     'Shopping',
+    'Health',
+    'Insurance',
+    'Investment',
+    'Electronics',
+    'Electricity',
+    'Rent',
+    
     'Others'
   ];
 
@@ -67,7 +74,7 @@ class _ExpensePageState extends State<ExpensePage> {
             ),
             ListTile(
               leading: Icon(Icons.feedback),
-              title: Text("Feedback"),
+              title: Text("Complaint"),
               onTap: () {
                 Navigator.push(
                   context,
@@ -168,7 +175,7 @@ class _ExpensePageState extends State<ExpensePage> {
               children: [
                 ElevatedButton(
                   onPressed: addMore,
-                  child: Text("Add More"),
+                  child: Text("Add "),
                 ),
                 ElevatedButton(
                   onPressed: ()async {

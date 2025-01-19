@@ -131,8 +131,8 @@ class HomeScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildInfoCard('Total Spend', '\$7687'),
-                  _buildInfoCard('Spend Balance', '${profiledata['Totalincome']}'),
+                  _buildInfoCard('Total Spend', '\7600'),
+                  _buildInfoCard('Balance', '${profiledata['Totalincome']}'),
                 ],
               ),
               SizedBox(height: 20),
@@ -157,9 +157,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _buildTransactionTile('Groceries', 'Dec 25, 2024', '12:30 PM', '\$50'),
-                    _buildTransactionTile('Restaurant', 'Dec 24, 2024', '7:45 PM', '\$80'),
-                    _buildTransactionTile('Electric Bill', 'Dec 23, 2024', '9:15 AM', '\$120'),
+                    _buildTransactionTile('Groceries', 'Dec 25, 2024', '12:30 PM', '\50'),
+                    _buildTransactionTile('Restaurant', 'Dec 24, 2024', '7:45 PM', '\80'),
+                    _buildTransactionTile('Electric Bill', 'Dec 23, 2024', '9:15 AM', '\120'),
                   ],
                 ),
               ),
