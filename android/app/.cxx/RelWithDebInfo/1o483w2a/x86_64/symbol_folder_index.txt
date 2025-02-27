@@ -1,0 +1,1 @@
+D:\stdBackup\ExpenseTrackerApp\build\app\intermediates\cxx\RelWithDebInfo\1o483w2a\obj\x86_64

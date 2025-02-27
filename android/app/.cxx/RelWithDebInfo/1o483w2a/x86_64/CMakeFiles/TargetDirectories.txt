@@ -1,0 +1,2 @@
+D:/stdBackup/ExpenseTrackerApp/android/app/.cxx/RelWithDebInfo/1o483w2a/x86_64/CMakeFiles/edit_cache.dir
+D:/stdBackup/ExpenseTrackerApp/android/app/.cxx/RelWithDebInfo/1o483w2a/x86_64/CMakeFiles/rebuild_cache.dir
