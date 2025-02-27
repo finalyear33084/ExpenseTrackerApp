@@ -4,6 +4,7 @@ import 'package:expense_tracker/services/getdashapi.dart';
 import 'package:expense_tracker/services/getprofileapi.dart';
 import 'package:expense_tracker/user/bottomBar.dart';
 import 'package:flutter/material.dart';
+  import 'package:shared_preferences/shared_preferences.dart';
 
 final Dio _dio = Dio();
 String baseurl = '';
@@ -24,6 +25,11 @@ Future<Map<String, dynamic>> loginfun(
     if (response.statusCode == 200) {
       if (response.data['message'] == 'success') {
         loginId = response.data['login_id'].toString();
+      
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('login_id', loginId!);
+        await prefs.setString('base_url', baseurl);
         await getProfile();
         await getDashboardData();
         Navigator.pushAndRemoveUntil(
